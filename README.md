@@ -1,5 +1,5 @@
 # req
-[![GoDoc](https://godoc.org/github.com/imroc/req?status.svg)](https://godoc.org/github.com/imroc/req)
+[![GoDoc](https://godoc.org/github.com/serialt/req?status.svg)](https://godoc.org/github.com/serialt/req)
 
 A golang http request library for humans
 
@@ -27,7 +27,7 @@ Document
 Install
 =======
 ``` sh
-go get github.com/imroc/req
+go get github.com/serialt/req
 ```
 
 Overview
