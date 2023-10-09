@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"encoding/xml"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -117,7 +117,7 @@ func TestParamBoth(t *testing.T) {
 func TestBody(t *testing.T) {
 	body := "request body"
 	handler := func(w http.ResponseWriter, r *http.Request) {
-		bs, err := ioutil.ReadAll(r.Body)
+		bs, err := io.ReadAll(r.Body)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -174,7 +174,7 @@ func TestBodyJSON(t *testing.T) {
 		}
 	}
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		data, err := ioutil.ReadAll(r.Body)
+		data, err := io.ReadAll(r.Body)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -217,7 +217,7 @@ func TestBodyXML(t *testing.T) {
 		}
 	}
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		data, err := ioutil.ReadAll(r.Body)
+		data, err := io.ReadAll(r.Body)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -269,7 +269,7 @@ func TestHeader(t *testing.T) {
 
 func TestUpload(t *testing.T) {
 	str := "hello req"
-	file := ioutil.NopCloser(strings.NewReader(str))
+	file := io.NopCloser(strings.NewReader(str))
 	upload := FileUpload{
 		File:      file,
 		FieldName: "media",
@@ -291,7 +291,7 @@ func TestUpload(t *testing.T) {
 			if p.FormName() != upload.FieldName {
 				t.Errorf("formname = %s; want = %s", p.FileName(), upload.FileName)
 			}
-			data, err := ioutil.ReadAll(p)
+			data, err := io.ReadAll(p)
 			if err != nil {
 				t.Fatal(err)
 			}

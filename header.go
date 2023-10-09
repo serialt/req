@@ -27,7 +27,7 @@ func ParseStruct(h Header, v interface{}) Header {
 		return h
 	}
 
-	err = json.Unmarshal(data, &h)
+	_ = json.Unmarshal(data, &h)
 	return h
 }
 

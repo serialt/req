@@ -5,7 +5,6 @@ import (
 	"encoding/xml"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"regexp"
@@ -53,7 +52,7 @@ func (r *Resp) ToBytes() ([]byte, error) {
 		return r.respBody, nil
 	}
 	defer r.resp.Body.Close()
-	respBody, err := ioutil.ReadAll(r.resp.Body)
+	respBody, err := io.ReadAll(r.resp.Body)
 	if err != nil {
 		r.err = err
 		return nil, err

@@ -1,7 +1,7 @@
 package req
 
 import (
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -36,7 +36,7 @@ func TestDumpText(t *testing.T) {
 
 func TestDumpUpload(t *testing.T) {
 	SetFlags(LreqBody)
-	file1 := ioutil.NopCloser(strings.NewReader("file1"))
+	file1 := io.NopCloser(strings.NewReader("file1"))
 	uploads := []FileUpload{
 		{
 			FileName:  "1.txt",

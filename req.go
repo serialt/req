@@ -9,7 +9,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"mime/multipart"
 	"net/http"
 	"net/textproto"
@@ -356,7 +355,7 @@ func (r *Req) Do(method, rawurl string, vs ...interface{}) (resp *Resp, err erro
 
 func setBodyBytes(req *http.Request, resp *Resp, data []byte) {
 	resp.reqBody = data
-	req.Body = ioutil.NopCloser(bytes.NewReader(data))
+	req.Body = io.NopCloser(bytes.NewReader(data))
 	req.ContentLength = int64(len(data))
 }
 
@@ -448,7 +447,7 @@ func setBodyReader(req *http.Request, resp *Resp, rd io.Reader) func() {
 	case io.ReadCloser:
 		rc = r
 	default:
-		rc = ioutil.NopCloser(rd)
+		rc = io.NopCloser(rd)
 	}
 	bw := &bodyWrapper{
 		ReadCloser: rc,
@@ -566,7 +565,7 @@ func (m *multipartHelper) Upload(req *http.Request) {
 		pw.Close()
 	}()
 	req.Header.Set("Content-Type", bodyWriter.FormDataContentType())
-	req.Body = ioutil.NopCloser(pr)
+	req.Body = io.NopCloser(pr)
 }
 
 func (m *multipartHelper) Dump() []byte {
