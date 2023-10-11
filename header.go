@@ -9,6 +9,28 @@ import "encoding/json"
 // Header represents http request header
 type Header map[string]string
 
+var MacChromeHeader = Header{
+	"Accept":          "*/*",
+	"User-Agent":      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36",
+	"Accept-Encoding": "gzip, deflate",
+}
+
+var MacFirefoxHeader = Header{
+	"Accept":          "*/*",
+	"User-Agent":      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/115.0",
+	"Accept-Encoding": "gzip, deflate",
+}
+
+var CurlHeader = Header{
+	"Accept":     "*/*",
+	"User-Agent": "curl/7.87.0",
+}
+
+var ReqHeader = Header{
+	"Accept":     "*/*",
+	"User-Agent": "Go Req",
+}
+
 func (h Header) Clone() Header {
 	if h == nil {
 		return nil
