@@ -107,6 +107,7 @@ func BodyXML(v interface{}) *bodyXml {
 // Req is a convenient client for initiating requests
 type Req struct {
 	client           *http.Client
+	header           Header
 	jsonEncOpts      *jsonEncOpts
 	xmlEncOpts       *xmlEncOpts
 	flag             int
@@ -175,6 +176,11 @@ func (r *Req) Do(method, rawurl string, vs ...interface{}) (resp *Resp, err erro
 		defer func(resp *Resp) {
 			fmt.Println(resp.Dump())
 		}(resp)
+	}
+	if len(r.header) > 0 {
+		for key, value := range r.header {
+			req.Header.Add(key, value)
+		}
 	}
 
 	var queryParam param
@@ -648,6 +654,25 @@ func (r *Req) Options(url string, v ...interface{}) (*Resp, error) {
 	return r.Do("OPTIONS", url, v...)
 }
 
+func (r *Req) SetHeader(key, value string) *Req {
+	if r.header == nil {
+		r.header = make(Header)
+	}
+	r.header[key] = value
+	return r
+}
+
+func (r *Req) SetHeaders(hdrs map[string]string) *Req {
+	for k, v := range hdrs {
+		r.SetHeader(k, v)
+	}
+	return r
+}
+
+func (r *Req) SetBasicAuth(username, password string) *Req {
+	return r.SetHeader("Authorization", BasicAuthHeaderValue(username, password))
+}
+
 // Get execute a http GET request
 func Get(url string, v ...interface{}) (*Resp, error) {
 	return std.Get(url, v...)
@@ -686,4 +711,20 @@ func Patch(url string, v ...interface{}) (*Resp, error) {
 // Do execute request.
 func Do(method, url string, v ...interface{}) (*Resp, error) {
 	return std.Do(method, url, v...)
+}
+
+func SetHeader(key, value string) *Req {
+	return std.SetHeader(key, value)
+}
+
+func SetHeaders(hdrs map[string]string) *Req {
+	return std.SetHeaders(hdrs)
+}
+
+func SetBearerAuthToken(token string) *Req {
+	return std.SetHeader("Authorization", "Bearer "+token)
+}
+
+func SetBasicAuth(username, password string) *Req {
+	return std.SetBasicAuth(username, password)
 }
